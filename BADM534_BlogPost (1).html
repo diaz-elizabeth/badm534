@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Does Going Viral Actually Move Stocks? | BADM 534</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #E84E0F;
+    --black: #0D0D0D;
+    --cream: #F5F0E8;
+    --gray: #6B6B6B;
+    --light: #EBEBEB;
+    --card: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--black);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--black);
+    color: var(--cream);
+    padding: 80px 40px 70px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    border: 1px solid rgba(232,78,15,0.3);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 10%;
+    width: 250px; height: 250px;
+    border-radius: 50%;
+    border: 1px solid rgba(232,78,15,0.15);
+  }
+  .hero-inner { max-width: 780px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-tag {
+    display: inline-block;
+    background: var(--orange);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 6vw, 62px);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 span { color: var(--orange); }
+  .hero-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(245,240,232,0.7);
+    max-width: 580px;
+    margin-bottom: 40px;
+  }
+  .byline {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .byline-dot {
+    width: 36px; height: 36px;
+    background: var(--orange);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+  .byline-text { font-size: 13px; color: rgba(245,240,232,0.6); }
+  .byline-text strong { color: var(--cream); font-weight: 500; display: block; }
+
+  /* CONTENT */
+  .content { max-width: 780px; margin: 0 auto; padding: 64px 40px; }
+
+  p { margin-bottom: 24px; color: #1a1a1a; }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 56px 0 20px;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 32px 0 12px;
+  }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    border-left: 3px solid var(--orange);
+    padding: 20px 28px;
+    margin: 40px 0;
+    background: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--black);
+  }
+
+  /* CAMPAIGN CARDS */
+  .campaign-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 32px 0 48px;
+  }
+  .campaign-card {
+    background: var(--black);
+    color: var(--cream);
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .campaign-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--orange);
+  }
+  .campaign-card .brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .campaign-card .campaign-name {
+    font-size: 12px;
+    color: var(--orange);
+    font-weight: 500;
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+  .campaign-card .artist {
+    font-size: 13px;
+    color: rgba(245,240,232,0.6);
+    margin-bottom: 4px;
+  }
+  .campaign-card .date {
+    font-size: 12px;
+    color: rgba(245,240,232,0.4);
+  }
+
+  /* DATA TABLES */
+  .data-block {
+    background: white;
+    border: 1px solid var(--light);
+    margin: 32px 0;
+    overflow: hidden;
+  }
+  .data-block-header {
+    background: var(--black);
+    color: var(--cream);
+    padding: 12px 20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .data-row {
+    display: flex;
+    align-items: center;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--light);
+    gap: 16px;
+  }
+  .data-row:last-child { border-bottom: none; }
+  .data-row-brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    width: 140px;
+    flex-shrink: 0;
+  }
+  .data-row-bar-wrap { flex: 1; }
+  .data-bar {
+    height: 8px;
+    border-radius: 2px;
+    background: var(--orange);
+    opacity: 0.85;
+  }
+  .data-bar.gray { background: #BBBBB0; }
+  .data-row-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    width: 70px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .data-row-val.green { color: #3B6D11; }
+  .data-row-val.amber { color: var(--orange); }
+
+  /* STAT CALLOUTS */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 32px 0;
+  }
+  .stat-card {
+    background: white;
+    padding: 24px 20px;
+    border-top: 3px solid var(--orange);
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 8px;
+    color: var(--black);
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.4;
+  }
+
+  /* SENTIMENT */
+  .sentiment-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 32px 0;
+  }
+  .sentiment-card {
+    background: white;
+    padding: 20px;
+    border: 1px solid var(--light);
+  }
+  .sentiment-brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .sentiment-score {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .sentiment-label { font-size: 12px; color: var(--gray); }
+  .sentiment-bar-wrap { margin-top: 12px; background: var(--light); height: 6px; border-radius: 2px; }
+  .sentiment-bar-fill { height: 6px; border-radius: 2px; background: var(--orange); }
+
+  /* DID SECTION */
+  .did-box {
+    background: var(--black);
+    color: var(--cream);
+    padding: 36px 32px;
+    margin: 40px 0;
+  }
+  .did-box h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--orange);
+    margin-bottom: 16px;
+  }
+  .did-equation {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.06);
+    padding: 14px 18px;
+    margin: 20px 0;
+    border-left: 3px solid var(--orange);
+    color: var(--cream);
+    letter-spacing: 0.01em;
+  }
+  .did-box p {
+    color: rgba(245,240,232,0.75);
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+  .did-result {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cream);
+  }
+
+  /* TAKEAWAYS */
+  .takeaway-list { margin: 24px 0; }
+  .takeaway {
+    display: flex;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--light);
+    align-items: flex-start;
+  }
+  .takeaway:last-child { border-bottom: none; }
+  .takeaway-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--orange);
+    width: 36px;
+    flex-shrink: 0;
+    line-height: 1.2;
+  }
+  .takeaway-text strong {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+    font-size: 16px;
+  }
+  .takeaway-text p {
+    font-size: 15px;
+    color: var(--gray);
+    margin: 0;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--black);
+    color: rgba(245,240,232,0.5);
+    padding: 40px;
+    text-align: center;
+    font-size: 13px;
+  }
+  .footer strong { color: var(--cream); }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 48px 0;
+    color: var(--gray);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Syne', sans-serif;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--light);
+  }
+
+  @media (max-width: 640px) {
+    .campaign-grid, .stat-row, .sentiment-grid { grid-template-columns: 1fr; }
+    .hero { padding: 48px 24px; }
+    .content { padding: 48px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">BADM 534 · Marketing Analytics · Spring 2026</div>
+    <h1>Does Going Viral Actually <span>Move Stocks?</span></h1>
+    <p class="hero-sub">We analyzed three of the biggest denim celebrity campaigns of 2024–25. Here's what the data actually says about virality, attention, and shareholder value.</p>
+    <div class="byline">
+      <div class="byline-dot">T4</div>
+      <div class="byline-text">
+        <strong>Gurleen Virk, Aaliyah Brown, Elizabeth Diaz, Barbara Chen</strong>
+        Team 4 · University of Illinois Urbana-Champaign
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <p>Every brand wants a cultural moment. Gap partnered with K-pop girl group KATSEYE for a music-driven Gen-Z campaign. Levi's tapped Beyoncé at the height of her Cowboy Carter era. American Eagle cast Sydney Sweeney in a campaign built entirely around a pun. Each launch generated press, social buzz, and millions of YouTube views. But did any of them actually make the stock go up?</p>
+
+  <p>That's the question we set out to answer in our BADM 534 final project. Using publicly available data — stock prices, Google Trends, YouTube engagement metrics, and over 3,000 user comments — we built a framework to measure what we call <strong>campaign attention</strong> and test whether it translates into measurable financial performance.</p>
+
+  <div class="pull-quote">
+    "Likes don't pay dividends. But search volume might be telling us something the market hasn't priced in yet."
+  </div>
+
+  <h2>The Three Campaigns</h2>
+  <p>We selected these three campaigns because they're comparable in scale, all involve publicly traded fashion brands, and each has a distinct celebrity with a measurable online presence — making them ideal for a cross-campaign comparison.</p>
+
+  <div class="campaign-grid">
+    <div class="campaign-card">
+      <div class="brand">Gap</div>
+      <div class="campaign-name">"Better in Denim"</div>
+      <div class="artist">feat. KATSEYE</div>
+      <div class="date">August 2025 · NYSE: GAP</div>
+    </div>
+    <div class="campaign-card">
+      <div class="brand">Levi's</div>
+      <div class="campaign-name">"Reiimagine"</div>
+      <div class="artist">feat. Beyoncé</div>
+      <div class="date">April 2025 · NYSE: LEVI</div>
+    </div>
+    <div class="campaign-card">
+      <div class="brand">American Eagle</div>
+      <div class="campaign-name">"Has Great Jeans"</div>
+      <div class="artist">feat. Sydney Sweeney</div>
+      <div class="date">July 2025 · NYSE: AEO</div>
+    </div>
+  </div>
+
+  <h2>How We Measured It</h2>
+  <p>We defined campaign attention as three separate proxies, analyzed independently rather than collapsed into a single score:</p>
+  <p><strong>Artist Attention</strong> — Google Trends search index for the celebrity name, ±12 weeks around launch.<br>
+  <strong>Brand Attention</strong> — Google Trends search index for the brand name, same window.<br>
+  <strong>Engagement Quality</strong> — YouTube channel monthly views + VADER sentiment scores from 1,000 comments per campaign.</p>
+  <p>For financial performance, we used <strong>Cumulative Abnormal Return (CAR)</strong> — the stock's return minus what the S&P 500 returned over the same ±30 day period. This isolates the campaign's impact from broader market movements.</p>
+
+  <div class="divider">Attention Findings</div>
+
+  <h2>Every Campaign Spiked Search. Gap Won the Attention Race.</h2>
+  <p>All three campaigns drove measurable consumer attention at launch — every brand saw a search index spike in the weeks immediately following their campaign drop. But the magnitude differed dramatically.</p>
+
+  <div class="data-block">
+    <div class="data-block-header">Average Brand Search Index (±12 weeks, normalized 0–100)</div>
+    <div class="data-row">
+      <div class="data-row-brand">Gap</div>
+      <div class="data-row-bar-wrap"><div class="data-bar" style="width:100%"></div></div>
+      <div class="data-row-val amber">42.35</div>
+    </div>
+    <div class="data-row">
+      <div class="data-row-brand">Levi's</div>
+      <div class="data-row-bar-wrap"><div class="data-bar" style="width:91%"></div></div>
+      <div class="data-row-val">38.61</div>
+    </div>
+    <div class="data-row">
+      <div class="data-row-brand">Amer. Eagle</div>
+      <div class="data-row-bar-wrap"><div class="data-bar gray" style="width:55%"></div></div>
+      <div class="data-row-val">23.45</div>
+    </div>
+  </div>
+
+  <p>One of our most interesting findings: Levi's artist search peaked at 100 — the maximum possible on Google Trends, driven by Beyoncé's enormous cultural footprint during the Cowboy Carter era. But artist search and brand search don't move together. Beyoncé dominated search, but Levi's brand search was lower than Gap's. People were searching for Beyoncé, not necessarily for Levi's.</p>
+
+  <p>This distinction turned out to matter a lot for stock performance, as we'll get to.</p>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-num">177M</div>
+      <div class="stat-label">Gap YouTube views total — largest by far</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">113M</div>
+      <div class="stat-label">Levi's YouTube views — strong and consistent</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">23M</div>
+      <div class="stat-label">American Eagle YouTube views — 8× less than Gap</div>
+    </div>
+  </div>
+
+  <div class="divider">Sentiment Findings</div>
+
+  <h2>The AEO Paradox: Positive Comments, Weak Returns</h2>
+  <p>We analyzed 1,000 YouTube comments per campaign using VADER, a natural language processing tool that scores text on a scale from −1 (negative) to +1 (positive). All three campaigns generated positive sentiment overall. But the rankings produced a counterintuitive result.</p>
+
+  <div class="sentiment-grid">
+    <div class="sentiment-card">
+      <div class="sentiment-brand">Levi's</div>
+      <div class="sentiment-score">0.224</div>
+      <div class="sentiment-label">avg VADER score · 46.6% positive</div>
+      <div class="sentiment-bar-wrap"><div class="sentiment-bar-fill" style="width:85%"></div></div>
+    </div>
+    <div class="sentiment-card">
+      <div class="sentiment-brand">Gap</div>
+      <div class="sentiment-score">0.214</div>
+      <div class="sentiment-label">avg VADER score · 44.4% positive</div>
+      <div class="sentiment-bar-wrap"><div class="sentiment-bar-fill" style="width:80%"></div></div>
+    </div>
+    <div class="sentiment-card">
+      <div class="sentiment-brand">Amer. Eagle</div>
+      <div class="sentiment-score">0.190</div>
+      <div class="sentiment-label">avg VADER score · 48.3% positive</div>
+      <div class="sentiment-bar-wrap"><div class="sentiment-bar-fill" style="width:72%"></div></div>
+    </div>
+  </div>
+
+  <p>American Eagle had the <em>highest percentage of positive comments</em> of the three — 48.3% — but ended up with the weakest relative stock outcome. This is what we call the AEO Paradox, and it's the most analytically interesting finding in our dataset. High comment sentiment alone doesn't predict financial performance. Reach matters. Brand alignment matters. Sentiment without scale isn't enough.</p>
+
+  <div class="divider">Stock Findings</div>
+
+  <h2>All Three Trended Positive. None Were Statistically Significant.</h2>
+  <p>Here's where things get honest. We calculated CAR (Cumulative Abnormal Return) for each brand over a ±30 day window around campaign launch, comparing daily stock returns against the S&P 500 as a benchmark.</p>
+
+  <div class="data-block">
+    <div class="data-block-header">Cumulative Abnormal Return ±30 Days (vs. S&P 500)</div>
+    <div class="data-row">
+      <div class="data-row-brand">Amer. Eagle</div>
+      <div class="data-row-bar-wrap"><div class="data-bar" style="width:100%"></div></div>
+      <div class="data-row-val green">+0.271</div>
+    </div>
+    <div class="data-row">
+      <div class="data-row-brand">Gap</div>
+      <div class="data-row-bar-wrap"><div class="data-bar" style="width:34%"></div></div>
+      <div class="data-row-val green">+0.091</div>
+    </div>
+    <div class="data-row">
+      <div class="data-row-brand">Levi's</div>
+      <div class="data-row-bar-wrap"><div class="data-bar gray" style="width:30%"></div></div>
+      <div class="data-row-val">+0.080</div>
+    </div>
+  </div>
+
+  <p>AEO's high CAR (+0.271) looks dramatic on paper — but its p-value was 0.704, far from the 0.05 threshold for statistical significance. All three campaigns had p-values between 0.68 and 0.78. None reached significance. This isn't a failure of our study — it's consistent with what economists call the <strong>Efficient Markets Hypothesis</strong>: markets price in publicly available information quickly, so campaign announcements don't produce sustained, abnormal returns.</p>
+
+  <p>What AEO's high CAR actually reflects is market volatility in AEO's stock during that period — not the Sydney Sweeney campaign. Which is exactly why stock price alone can't tell you if a campaign worked.</p>
+
+  <div class="divider">Regression Analysis</div>
+
+  <h2>Our Causal Test: Difference-in-Differences</h2>
+  <p>To go beyond correlation and attempt a causal estimate of campaign impact, we ran a Difference-in-Differences (DiD) regression. This method compares how treated brands (the ones that ran campaigns) performed relative to matched control brands in the same sector that didn't run a campaign in the same window.</p>
+
+  <div class="did-box">
+    <h3>Difference-in-Differences Model</h3>
+    <div class="did-equation">Return = β₀ + β₁(Post) + β₂(Treated) + β₃(Post × Treated) + ε</div>
+    <p><strong style="color:rgba(245,240,232,0.9)">Treated brands:</strong> Gap, Levi's, American Eagle (ran campaigns)</p>
+    <p><strong style="color:rgba(245,240,232,0.9)">Control brands:</strong> Urban Outfitters, Kontoor Brands, Abercrombie (sector peers, no campaign)</p>
+    <p><strong style="color:rgba(245,240,232,0.9)">Sample:</strong> n = 340 daily return observations · ±45 days per brand pair</p>
+    <p>β₃ (Post × Treated) is our DiD estimator — the causal effect of the campaign above and beyond what sector peers did in the same period.</p>
+    <div class="did-result">
+      Result: Campaign Effect (DiD) = +0.0018 · p = 0.944 · Not significant.<br>
+      <span style="font-weight:400; font-size:14px; color:rgba(245,240,232,0.6)">Campaigns produced no measurable return above sector peers. Markets are efficient.</span>
+    </div>
+  </div>
+
+  <p>A null result from a DiD isn't a failed study — it's an honest answer to a specific question. Celebrity campaigns, at least at this scale and over a 30-day window, don't produce statistically detectable abnormal returns above what comparable brands were doing anyway. The efficient markets hypothesis holds.</p>
+
+  <div class="divider">Key Takeaways</div>
+
+  <h2>What We Actually Learned</h2>
+
+  <div class="takeaway-list">
+    <div class="takeaway">
+      <div class="takeaway-num">01</div>
+      <div class="takeaway-text">
+        <strong>Campaigns reliably drive attention — scale varies enormously</strong>
+        <p>Every launch produced a measurable search and YouTube spike. But Gap's music-driven approach generated 8× more YouTube engagement than American Eagle's influencer campaign. The type of celebrity and campaign format matters for reach.</p>
+      </div>
+    </div>
+    <div class="takeaway">
+      <div class="takeaway-num">02</div>
+      <div class="takeaway-text">
+        <strong>Brand search matters more than artist search for stock response</strong>
+        <p>Beyoncé peaked at 100 on Google Trends — but that's people searching for Beyoncé. Gap's brand search index was higher than AEO's and directionally correlated with its stronger CAR. The campaign needs to pull attention to the brand, not just the celebrity.</p>
+      </div>
+    </div>
+    <div class="takeaway">
+      <div class="takeaway-num">03</div>
+      <div class="takeaway-text">
+        <strong>Sentiment explains the gap between visibility and financial outcome</strong>
+        <p>AEO's high view count and high positive comment percentage didn't translate. Reach without brand alignment — where consumers connect the celebrity to the brand, not just enjoy the celebrity — appears to limit financial impact.</p>
+      </div>
+    </div>
+    <div class="takeaway">
+      <div class="takeaway-num">04</div>
+      <div class="takeaway-text">
+        <strong>Markets are efficient — campaigns don't produce immediate stock gains</strong>
+        <p>None of our three campaigns produced statistically significant abnormal returns, and our DiD confirms no causal effect above sector peers. This doesn't mean campaigns don't matter — it means their financial impact likely shows up in longer-term metrics like brand equity, customer acquisition, and revenue, which fall outside a 30-day event window.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    "Brands should evaluate campaigns using a combined dashboard — search index + video reach + sentiment + CAR. No single metric tells the full story."
+  </div>
+
+  <h2>Limitations & What Comes Next</h2>
+  <p>We're the first to acknowledge what our study can't do. Three campaigns is enough to identify patterns — it's not enough to draw firm conclusions. Stock prices move for dozens of reasons beyond any single marketing event. Our sentiment model (VADER) was trained on general social media text, not specifically on fashion brand commentary. And we only studied campaigns that were already considered viral — there's no comparison group of quieter campaigns that didn't generate buzz.</p>
+
+  <p>The most natural extension would be expanding this framework to 20–30 campaigns across multiple years and industries. With that sample size, the regression becomes genuinely predictive rather than descriptive. A brand dashboard that tracks brand search index, YouTube engagement velocity, VADER sentiment, and CAR in real time — the kind of tool that would let a marketing team see early signals of whether a campaign is actually building financial value — is entirely buildable from publicly available data.</p>
+
+  <p>The data is out there. The methodology works. It just needs more campaigns.</p>
+
+  <div class="divider">About This Project</div>
+
+  <p style="color: var(--gray); font-size: 15px;">This analysis was completed as part of BADM 534: Marketing Analytics in Practice at the University of Illinois Urbana-Champaign, Spring 2026. Data sources: Yahoo Finance API (stock returns), Google Trends via PyTrends (search index), YouTube Data API (channel views and comments), VADER NLP library (sentiment scoring). All analysis conducted in Python. Code and data available on request.</p>
+
+</div>
+
+<div class="footer">
+  <strong>Team 4 · BADM 534 · Spring 2026</strong><br>
+  Gurleen Virk · Aaliyah Brown · Elizabeth Diaz · Barbara Chen<br><br>
+  University of Illinois Urbana-Champaign
+</div>
+
+</body>
+</html>
